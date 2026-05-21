@@ -36,6 +36,8 @@ Users can search for any country and instantly view important travel-related det
 
 ```bash
 https://restcountries.com/v3.1/name/{country}
+```
+
 ---
 
 ## 📂 Project Structure
@@ -83,4 +85,16 @@ Through this project, I learned:
 * Responsive UI design
 * Handling JSON data
 * Error handling in APIs
+
+---
+
+## 📌 Future Improvements
+
+* 🌤️ Add live weather using OpenWeather API
+* 🗺️ Add Google Maps integration
+* 🌙 Dark mode support
+* ❤️ Save favorite countries
+* 📷 Add tourist place images
+
+
 
