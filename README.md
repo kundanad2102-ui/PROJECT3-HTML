@@ -36,14 +36,6 @@ Users can search for any country and instantly view important travel-related det
 
 ```bash
 https://restcountries.com/v3.1/name/{country}
-```
-
-Example:
-
-```bash
-https://restcountries.com/v3.1/name/india
-```
-
 ---
 
 ## 📂 Project Structure
