@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel Explorer</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#1d2671,#c33764);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    width:430px;
+    background:rgba(255,255,255,0.95);
+    padding:32px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 15px 35px rgba(0,0,0,0.25);
+}
+
+h1{
+    color:#1d2671;
+    margin-bottom:8px;
+    font-size:32px;
+    font-weight:700;
+}
+
+.subtitle{
+    color:#666;
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+.search-box{
+    display:flex;
+    gap:10px;
+    background:#f2f4ff;
+    padding:8px;
+    border-radius:15px;
+}
+
+input{
+    flex:1;
+    padding:13px;
+    border:none;
+    outline:none;
+    background:transparent;
+    font-size:15px;
+    color:#333;
+}
+
+button{
+    padding:13px 20px;
+    border:none;
+    background:linear-gradient(135deg,#1d2671,#c33764);
+    color:white;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:600;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+    box-shadow:0 6px 15px rgba(195,55,100,0.4);
+}
+
+.country-box{
+    margin-top:30px;
+    display:none;
+    background:#f8f8ff;
+    padding:22px;
+    border-radius:20px;
+    box-shadow:inset 0 0 10px rgba(0,0,0,0.05);
+}
+
+.country-box img{
+    width:160px;
+    height:100px;
+    object-fit:cover;
+    margin-bottom:18px;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.2);
+}
+
+.country-box h2{
+    color:#c33764;
+    margin-bottom:18px;
+    font-size:26px;
+}
+
+.country-box p{
+    background:white;
+    padding:10px 14px;
+    margin:10px 0;
+    border-radius:12px;
+    font-size:15px;
+    color:#333;
+    text-align:left;
+    box-shadow:0 4px 10px rgba(0,0,0,0.06);
+}
+
+.error{
+    color:#d90429;
+    margin-top:18px;
+    font-weight:600;
+    font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Travel Explorer</h1>
+    <p class="subtitle">Search any country and explore travel details</p>
+
+    <div class="search-box">
+        <input type="text" placeholder="Enter Country Name" id="country">
+        <button onclick="getCountry()">Search</button>
+    </div>
+
+    <p class="error" id="error"></p>
+
+    <div class="country-box" id="countryBox">
+        <img id="flag" src="">
+        <h2 id="countryName"></h2>
+        <p id="capital"></p>
+        <p id="region"></p>
+        <p id="population"></p>
+        <p id="currency"></p>
+        <p id="language"></p>
+        <p id="timezone"></p>
+    </div>
+</div>
+
+<script>
+async function getCountry(){
+
+    var country = document.getElementById("country").value.trim();
+
+    var countryBox = document.getElementById("countryBox");
+    var error = document.getElementById("error");
+
+    if(country === ""){
+        error.innerHTML = "Please enter a country name";
+        countryBox.style.display = "none";
+        return;
+    }
+
+    var url = `https://restcountries.com/v3.1/name/${country}`;
+
+    try{
+        var response = await fetch(url);
+
+        if(!response.ok){
+            throw new Error("Country not found");
+        }
+
+        var data = await response.json();
+
+        var countryData = data[0];
+
+        document.getElementById("flag").src = countryData.flags.png;
+
+        document.getElementById("countryName").innerHTML =
+        countryData.name.common;
+
+        document.getElementById("capital").innerHTML =
+        "Capital : " + countryData.capital[0];
+
+        document.getElementById("region").innerHTML =
+        "Region : " + countryData.region;
+
+        document.getElementById("population").innerHTML =
+        "Population : " + countryData.population.toLocaleString();
+
+        var currencyName = Object.values(countryData.currencies)[0].name;
+
+        document.getElementById("currency").innerHTML =
+        "Currency : " + currencyName;
+
+        var languageName = Object.values(countryData.languages)[0];
+
+        document.getElementById("language").innerHTML =
+        "Language : " + languageName;
+
+        document.getElementById("timezone").innerHTML =
+        "Timezone : " + countryData.timezones[0];
+
+        countryBox.style.display = "block";
+        error.innerHTML = "";
+
+    }
+    catch(errorMessage){
+        error.innerHTML = "Country not found. Please try again.";
+        countryBox.style.display = "none";
+    }
+}
+</script>
+
+</body>
+</html>
